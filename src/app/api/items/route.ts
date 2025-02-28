@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import type { Session } from "next-auth";
 import { prisma } from "@/lib/prisma";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 // GET - Buscar itens do usuário
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session | null;
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
@@ -24,7 +25,7 @@ export async function GET() {
 
 // POST - Criar novo item
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session | null;
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
 
 // PUT - Atualizar item
 export async function PUT(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session | null;
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
@@ -85,7 +86,7 @@ export async function PUT(request: Request) {
 
 // DELETE - Remover item
 export async function DELETE(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = (await getServerSession(authOptions)) as Session | null;
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
   }
