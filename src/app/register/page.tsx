@@ -30,7 +30,14 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch("/api/register", {
+      console.log("Enviando requisição para /api/register");
+      
+      // Use o IP local para garantir que a requisição seja feita para o servidor correto
+      const baseUrl = window.location.origin;
+      const url = `${baseUrl}/api/register`;
+      console.log("URL da requisição:", url);
+      
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,16 +47,22 @@ export default function RegisterPage() {
           email: formData.email,
           password: formData.password,
         }),
+        // Evitar caching
+        cache: "no-store",
       });
 
+      console.log("Resposta recebida, status:", response.status);
       const data = await response.json();
+      console.log("Dados da resposta:", data);
 
       if (!response.ok) {
-        throw new Error(data.message || "Erro ao registrar usuário");
+        throw new Error(data.message || data.error || "Erro ao registrar usuário");
       }
 
+      console.log("Registro bem-sucedido, redirecionando para login");
       router.push("/login");
     } catch (error) {
+      console.error("Erro durante o registro:", error);
       setError(
         error instanceof Error ? error.message : "Erro ao registrar usuário"
       );

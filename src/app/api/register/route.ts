@@ -4,30 +4,44 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
+    console.log("Iniciando processo de registro");
     const { name, email, password } = await req.json();
+    console.log("Dados recebidos:", { name, email, passwordLength: password?.length });
 
     // Validações básicas
     if (!email || !password) {
+      console.log("Validação falhou: email ou senha ausentes");
       return NextResponse.json(
         { message: "Email e senha são obrigatórios" },
         { status: 400 }
       );
     }
 
+    console.log("Verificando se o email já está em uso");
     // Verificar se o email já está em uso
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
 
-    if (existingUser) {
-      return NextResponse.json(
-        { message: "Email já está em uso" },
-        { status: 400 }
-      );
+      if (existingUser) {
+        console.log("Email já está em uso:", email);
+        return NextResponse.json(
+          { message: "Email já está em uso" },
+          { status: 400 }
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao verificar email existente:", error);
+      throw error;
     }
 
+    console.log("Criando hash da senha");
     // Criar o usuário
     const hashedPassword = await hash(password, 10);
+    console.log("Hash criado com sucesso");
+    
+    console.log("Criando usuário no banco de dados");
     const user = await prisma.user.create({
       data: {
         name,
@@ -35,7 +49,9 @@ export async function POST(req: Request) {
         password: hashedPassword,
       },
     });
+    console.log("Usuário criado com sucesso, ID:", user.id);
 
+    console.log("Criando item de exemplo");
     // Criar um item de exemplo para o usuário
     await prisma.item.create({
       data: {
@@ -46,6 +62,7 @@ export async function POST(req: Request) {
         userId: user.id,
       },
     });
+    console.log("Item de exemplo criado com sucesso");
 
     return NextResponse.json(
       { message: "Usuário criado com sucesso" },
