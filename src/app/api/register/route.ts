@@ -36,10 +36,13 @@ export async function POST(req: Request) {
       },
     });
 
-    // Criar uma lista padrão para o usuário
-    await prisma.list.create({
+    // Criar um item de exemplo para o usuário
+    await prisma.item.create({
       data: {
-        name: "Minha Lista",
+        name: "Item de exemplo",
+        quantity: 1,
+        category: "geral",
+        checked: false,
         userId: user.id,
       },
     });
