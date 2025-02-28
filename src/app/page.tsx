@@ -90,7 +90,7 @@ export default function Home() {
           const data = await response.json();
           setItems(data);
         }
-      } catch (error) {
+      } catch {
         setAlert({
           message: "Erro ao carregar itens",
           type: "error",
@@ -130,7 +130,7 @@ export default function Home() {
           type: "success",
         });
       }
-    } catch (error) {
+    } catch {
       setAlert({
         message: "Erro ao adicionar item",
         type: "error",
@@ -171,7 +171,7 @@ export default function Home() {
           })
         );
       }
-    } catch (error) {
+    } catch {
       setAlert({
         message: "Erro ao atualizar item",
         type: "error",
@@ -195,7 +195,7 @@ export default function Home() {
           type: "error",
         });
       }
-    } catch (error) {
+    } catch {
       setAlert({
         message: "Erro ao remover item",
         type: "error",
@@ -227,7 +227,7 @@ export default function Home() {
         }!`,
         type: "info",
       });
-    } catch (error) {
+    } catch {
       setAlert({
         message: "Erro ao limpar itens concluídos",
         type: "error",
