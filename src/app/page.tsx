@@ -7,11 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "@/components/ThemeToggle";
 import { default as dynamicImport } from "next/dynamic";
 
-// Desativa a pré-renderização estática para esta página
-export const dynamic = "force-dynamic";
-export const dynamicParams = false;
-export const revalidate = 0;
-
 type Item = {
   id: string;
   name: string;

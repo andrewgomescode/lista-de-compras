@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
+// Este middleware executa antes de cada requisição
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const isAuthPage =
@@ -26,10 +27,21 @@ export async function middleware(request: NextRequest) {
   }
 
   // Se estiver autenticado, permite o acesso
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("Cache-Control", "no-store, max-age=0");
+  return response;
 }
 
 // Configurar quais rotas o middleware deve proteger
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    /*
+     * Corresponde a todas as rotas exceto:
+     * 1. /api (rotas de API)
+     * 2. /_next (arquivos internos do Next.js)
+     * 3. /_static (se você usar o export 'output: export')
+     * 4. /favicon.ico, /sitemap.xml (arquivos estáticos)
+     */
+    "/((?!api|_next|_static|favicon.ico|sitemap.xml).*)",
+  ],
 };
