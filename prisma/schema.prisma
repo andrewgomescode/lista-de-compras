@@ -9,9 +9,10 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") // Opcional: URL para conexão direta (sem pooling)
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // A linha abaixo foi comentada para tornar DIRECT_URL opcional
+  // directUrl = env("DIRECT_URL") // Opcional: URL para conexão direta (sem pooling)
 }
 
 model User {
