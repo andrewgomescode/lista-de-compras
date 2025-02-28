@@ -5,6 +5,11 @@ import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "@/components/ThemeToggle";
+import dynamic from "next/dynamic";
+
+// Desativa a pré-renderização estática para esta página
+export const dynamicParams = false;
+export const revalidate = 0;
 
 type Item = {
   id: string;
@@ -68,7 +73,14 @@ const Alert = ({ message, type, onClose }: AlertProps) => {
   );
 };
 
-export default function Home() {
+// Componente principal com renderização apenas no cliente
+const HomePage = dynamic(() => Promise.resolve(Home), { ssr: false });
+
+export default function Page() {
+  return <HomePage />;
+}
+
+function Home() {
   const { data: session } = useSession();
   const [items, setItems] = useState<Item[]>([]);
   const [newItem, setNewItem] = useState("");
