@@ -12,7 +12,10 @@ export async function POST(req: Request) {
     if (!email || !password) {
       console.log("Validação falhou: email ou senha ausentes");
       return NextResponse.json(
-        { message: "Email e senha são obrigatórios" },
+        { 
+          message: "Email e senha são obrigatórios",
+          success: false 
+        },
         { status: 400 }
       );
     }
@@ -27,13 +30,24 @@ export async function POST(req: Request) {
       if (existingUser) {
         console.log("Email já está em uso:", email);
         return NextResponse.json(
-          { message: "Email já está em uso" },
+          { 
+            message: "Email já está em uso",
+            success: false
+          },
           { status: 400 }
         );
       }
+      console.log("Email disponível, continuando com o registro");
     } catch (error) {
       console.error("Erro ao verificar email existente:", error);
-      throw error;
+      return NextResponse.json(
+        { 
+          message: "Erro ao verificar disponibilidade do email",
+          error: error instanceof Error ? error.message : "Erro desconhecido",
+          success: false
+        },
+        { status: 500 }
+      );
     }
 
     console.log("Criando hash da senha");
@@ -65,7 +79,10 @@ export async function POST(req: Request) {
     console.log("Item de exemplo criado com sucesso");
 
     return NextResponse.json(
-      { message: "Usuário criado com sucesso" },
+      { 
+        message: "Usuário criado com sucesso",
+        success: true
+      },
       { status: 201 }
     );
   } catch (error: any) {
@@ -82,6 +99,7 @@ export async function POST(req: Request) {
         code: errorCode,
         details:
           process.env.NODE_ENV !== "production" ? error.stack : undefined,
+        success: false
       },
       { status: 500 }
     );

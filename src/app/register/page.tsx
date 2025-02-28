@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,6 +10,7 @@ import PasswordInput from "@/components/PasswordInput";
 export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -18,10 +19,22 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
 
+  // Limpar mensagem de erro após 5 segundos
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError(null);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     if (formData.password !== formData.confirmPassword) {
       setError("As senhas não coincidem");
@@ -56,11 +69,31 @@ export default function RegisterPage() {
       console.log("Dados da resposta:", data);
 
       if (!response.ok) {
-        throw new Error(data.message || data.error || "Erro ao registrar usuário");
+        // Identificar especificamente se é um erro de email já em uso
+        if (response.status === 400 && data.message === "Email já está em uso") {
+          throw new Error("Este email já está cadastrado. Tente outro ou faça login.");
+        } else {
+          throw new Error(data.message || data.error || "Erro ao registrar usuário");
+        }
       }
 
-      console.log("Registro bem-sucedido, redirecionando para login");
-      router.push("/login");
+      // Registro bem-sucedido
+      setSuccess("Conta criada com sucesso! Redirecionando para o login...");
+      
+      // Limpar o formulário após registro bem-sucedido
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      
+      // Atraso para mostrar a mensagem de sucesso antes de redirecionar
+      setTimeout(() => {
+        console.log("Registro bem-sucedido, redirecionando para login");
+        router.push("/login?registered=true");
+      }, 2000);
+      
     } catch (error) {
       console.error("Erro durante o registro:", error);
       setError(
@@ -99,9 +132,20 @@ export default function RegisterPage() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-red-100 dark:bg-red-900/30 border-l-4 border-market-secondary dark:border-marketDark-secondary text-market-secondary dark:text-marketDark-secondary p-4 mb-6 rounded"
+                className="bg-red-100 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-500 text-red-700 dark:text-red-300 p-4 mb-6 rounded"
               >
                 {error}
+              </motion.div>
+            )}
+
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-green-100 dark:bg-green-900/30 border-l-4 border-green-500 dark:border-green-500 text-green-700 dark:text-green-300 p-4 mb-6 rounded"
+              >
+                {success}
               </motion.div>
             )}
           </AnimatePresence>

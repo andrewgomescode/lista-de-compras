@@ -526,7 +526,7 @@ function Home() {
         </main>
 
         <footer className="bg-market-card dark:bg-marketDark-card p-4 text-center text-market-text-secondary dark:text-marketDark-text-secondary text-sm border-t border-market-border dark:border-marketDark-border transition-colors duration-200">
-          <p>Lista de Compras - Aplicação Interativa</p>
+          <p>Lista de Compras - &copy;Feito por Andrew Gomes</p>
         </footer>
       </div>
     </ProtectedRoute>
