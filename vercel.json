@@ -8,7 +8,7 @@
   "build": {
     "env": {
       "PRISMA_GENERATE_DATAPROXY": "true",
-      "NEXT_DISABLE_PRERENDER": "true"
+      "NEXT_PUBLIC_FORCE_DYNAMIC": "true"
     }
   }
 }

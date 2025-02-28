@@ -5,9 +5,10 @@ import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "@/components/ThemeToggle";
-import dynamic from "next/dynamic";
+import { default as dynamicImport } from "next/dynamic";
 
 // Desativa a pré-renderização estática para esta página
+export const dynamic = "force-dynamic";
 export const dynamicParams = false;
 export const revalidate = 0;
 
@@ -74,7 +75,7 @@ const Alert = ({ message, type, onClose }: AlertProps) => {
 };
 
 // Componente principal com renderização apenas no cliente
-const HomePage = dynamic(() => Promise.resolve(Home), { ssr: false });
+const HomePage = dynamicImport(() => Promise.resolve(Home), { ssr: false });
 
 export default function Page() {
   return <HomePage />;

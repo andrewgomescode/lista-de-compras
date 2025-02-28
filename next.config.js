@@ -2,13 +2,12 @@
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
-  swcMinify: true,
-  experimental: {
-    // Desativa a pré-renderização estática para evitar erros com useSession
-    appDir: true,
-  },
   // Configuração para desativar a pré-renderização estática
   staticPageGenerationTimeout: 1000,
+  // Configuração para forçar o modo dinâmico
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig; 
