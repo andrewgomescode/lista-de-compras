@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
@@ -10,12 +11,12 @@ export default function NotFound() {
         <p className="text-market-text-primary dark:text-marketDark-text-primary mb-6">
           A página que você está procurando não existe ou foi movida.
         </p>
-        <a
+        <Link
           href="/"
           className="inline-block bg-market-primary hover:bg-market-hover dark:bg-marketDark-primary dark:hover:bg-marketDark-hover text-white font-medium py-2 px-4 rounded transition-colors"
         >
           Voltar para a página inicial
-        </a>
+        </Link>
       </div>
     </div>
   );

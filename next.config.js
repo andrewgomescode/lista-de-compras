@@ -6,7 +6,9 @@ const nextConfig = {
   staticPageGenerationTimeout: 1000,
   // Configuração para forçar o modo dinâmico
   experimental: {
-    serverActions: true,
+    serverActions: {
+      allowedOrigins: ['localhost:3000', '*.vercel.app']
+    }
   },
 };
 
