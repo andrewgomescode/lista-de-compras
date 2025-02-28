@@ -10,8 +10,12 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
+  // URL com pooling para consultas normais
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") // URL para conexão direta (sem pooling)
+  // URL direta para migrações e operações de schema
+  directUrl = env("DIRECT_URL")
+  // Necessário para usar o pgBouncer
+  relationMode = "prisma"
 }
 
 model User {
