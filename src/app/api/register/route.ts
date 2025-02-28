@@ -51,10 +51,21 @@ export async function POST(req: Request) {
       { message: "Usuário criado com sucesso" },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erro ao registrar usuário:", error);
+
+    // Detalhamento do erro para ajudar no diagnóstico
+    const errorMessage = error.message || "Erro desconhecido";
+    const errorCode = error.code || "UNKNOWN_ERROR";
+
     return NextResponse.json(
-      { message: "Erro ao criar usuário" },
+      {
+        message: "Erro ao criar usuário",
+        error: errorMessage,
+        code: errorCode,
+        details:
+          process.env.NODE_ENV !== "production" ? error.stack : undefined,
+      },
       { status: 500 }
     );
   }
