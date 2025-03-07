@@ -35,7 +35,6 @@ body {
     "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-/* Personalizar o estilo do scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -53,7 +52,6 @@ body {
   background: var(--primary);
 }
 
-/* Estilo para inputs */
 input,
 select,
 textarea {
@@ -68,7 +66,6 @@ textarea:focus {
   box-shadow: 0 0 0 1px var(--primary);
 }
 
-/* Animações */
 @keyframes fadeIn {
   from {
     opacity: 0;

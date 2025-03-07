@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-// Configuração para lidar melhor com ambientes serverless
 const prismaClientSingleton = () => {
   return new PrismaClient({
     log: ["error", "warn"],

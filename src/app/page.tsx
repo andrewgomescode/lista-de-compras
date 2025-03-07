@@ -265,7 +265,6 @@ function Home() {
     new Set([...categories, ...items.map((item) => item.category)])
   );
 
-  // Função para lidar com tecla Enter no input
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       addItem();

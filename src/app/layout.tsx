@@ -4,7 +4,6 @@ import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
-// Desativa a pré-renderização estática para o layout
 export const dynamic = "force-dynamic";
 export const revalidate = false;
 
